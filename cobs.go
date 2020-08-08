@@ -106,5 +106,5 @@ func Decode(input []byte) []byte {
 		}
 	}
 
-	return output[:writeIndex]
+	return output[:writeIndex-1]
 }
