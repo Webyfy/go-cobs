@@ -63,7 +63,7 @@ func Encode(input []byte) []byte {
 		output[codeIndex] = distance
 	}
 
-	return output[:writeIndex]
+	return append(output[:writeIndex], 0)
 }
 
 // Decode a cobs frame to a slice of bytes
