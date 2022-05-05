@@ -1,3 +1,3 @@
-module git.reach-iot.com/iot-master/cobs
+module git.webyfy.com/iot-master/cobs
 
-go 1.16
+go 1.18
