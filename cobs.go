@@ -72,6 +72,12 @@ func Decode(input []byte) []byte {
 	if length == 0 {
 		return nil
 	}
+
+	// remove trailing 0, if present
+	if input[length-1] == 0 {
+		length--
+	}
+
 	output := make([]byte, length)
 	readIndex := 0
 	writeIndex := 0
@@ -110,5 +116,5 @@ func Decode(input []byte) []byte {
 		return nil
 	}
 
-	return output[:writeIndex-1]
+	return output
 }
