@@ -67,54 +67,43 @@ func Encode(input []byte) []byte {
 }
 
 // Decode a cobs frame to a slice of bytes
-func Decode(input []byte) []byte {
-	length := len(input)
-	if length == 0 {
+func Decode(enc []byte) []byte {
+	encLen := len(enc)
+	if enc[encLen-1] == 0 { // remove trailing 0
+		encLen--
+	}
+
+	dest := make([]byte, encLen)
+	destLen := encLen
+	ptr := 0
+	pos := 0
+
+	if encLen == 0 {
 		return nil
 	}
 
-	// remove trailing 0, if present
-	if input[length-1] == 0 {
-		length--
-	}
+	for ptr < encLen {
+		code := enc[ptr]
 
-	output := make([]byte, length)
-	readIndex := 0
-	writeIndex := 0
+		if ptr+int(code) > encLen {
+			return nil
+		}
+		ptr++
 
-	var distance byte
-	var i byte
-
-	for readIndex < length {
-		// Copy the current input value to the distance value
-		distance = input[readIndex]
-
-		// If the index of the next distance value is greater than the length of the input
-		// AND the distance is not equal to one
-		if readIndex+int(distance) > length && distance != 1 {
+		if pos+int(code) > destLen {
 			return nil
 		}
 
-		// Increment to the next not zero value
-		readIndex++
-
-		// Copy the input to the output for the distance
-		for i = 1; i < distance; i++ {
-			output[writeIndex] = input[readIndex]
-			writeIndex++
-			readIndex++
+		for i := 1; i < int(code); i++ {
+			dest[pos] = enc[ptr]
+			pos++
+			ptr++
 		}
-
-		// Determine if the
-		if distance != 0xFF && readIndex != length {
-			output[writeIndex] = 0x00
-			writeIndex++
+		if code < 0xFF {
+			dest[pos] = 0
+			pos++
 		}
 	}
 
-	if writeIndex == 0 {
-		return nil
-	}
-
-	return output
+	return dest[:pos-1] // trim phantom zero
 }
