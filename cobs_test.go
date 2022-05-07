@@ -64,6 +64,13 @@ func TestCobsDecoding(t *testing.T) {
 	encodedBytes := Encode(data)
 	decodedBytes := Decode(encodedBytes)
 	if !bytes.Equal(data, decodedBytes) {
-		t.Errorf("Cobs Decoding test failed")
+		t.Errorf("Cobs Decoding with trailing 0 failed")
+	}
+
+	// remove trailing zero
+	encodedBytes = encodedBytes[:len(encodedBytes)-1]
+	decodedBytes = Decode(encodedBytes)
+	if !bytes.Equal(data, decodedBytes) {
+		t.Errorf("Cobs Decoding without trailing 0 failed")
 	}
 }
