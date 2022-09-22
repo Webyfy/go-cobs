@@ -74,7 +74,6 @@ func Decode(enc []byte) []byte {
 	}
 
 	dest := make([]byte, encLen)
-	destLen := encLen
 	ptr := 0
 	pos := 0
 
@@ -90,7 +89,7 @@ func Decode(enc []byte) []byte {
 		}
 		ptr++
 
-		if pos+int(code) > destLen {
+		if pos+int(code) > encLen {
 			return nil
 		}
 
