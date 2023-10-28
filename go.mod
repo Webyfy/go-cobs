@@ -1,3 +1,3 @@
-module git.webyfy.com/iot-master/cobs
+module gitlab.com/webyfy/iot/go-cobs
 
-go 1.18
+go 1.21.3
